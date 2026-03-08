@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTERNITY STUDIO | Animation & Motion Design</title>
+    <meta name="description" content="INTERNITY STUDIO - Premium animation and motion design studio by Abhishek Singh">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==================== LOADER ==================== -->
+<div id="loader" class="loader-overlay">
+    <div class="loader-wrapper">
+        <span class="loader-letter">I</span>
+        <span class="loader-letter">N</span>
+        <span class="loader-letter">T</span>
+        <span class="loader-letter">E</span>
+        <span class="loader-letter">R</span>
+        <span class="loader-letter">N</span>
+        <span class="loader-letter">I</span>
+        <span class="loader-letter">T</span>
+        <span class="loader-letter">Y</span>
+        <div class="loader"></div>
+    </div>
+</div>
+
+<!-- ==================== BACKGROUND LINES ==================== -->
+<div class="bg-lines">
+    <div class="bg-line"></div>
+    <div class="bg-line"></div>
+    <div class="bg-line"></div>
+</div>
+
+<!-- ==================== TORCH TOGGLE ==================== -->
+<label class="torch-container">
+    <div class="torch-label">Light</div>
+    <input id="torch-toggle" type="checkbox">
+    <div class="torch">
+        <div class="torch-head">
+            <div class="torch-face top"><div></div><div></div><div></div><div></div></div>
+            <div class="torch-face left"><div></div><div></div><div></div><div></div></div>
+            <div class="torch-face right"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div class="torch-stick">
+            <div class="torch-stick-side stick-left">
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+            </div>
+            <div class="torch-stick-side stick-right">
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div>
+            </div>
+        </div>
+    </div>
+</label>
+
+<!-- ==================== HERO SECTION ==================== -->
+<section id="hero" class="hero-section">
+    <div class="hero-content">
+        <header class="hero-header">
+            <div class="menu-icon">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
+            <h1 class="site-title hero-title">INTERNITY STUDIO</h1>
+            <ul class="hero-nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Work</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </header>
+
+        <p class="coords-text">N 28&deg; 38' 12.5" / E 77&deg; 13' 45.8"</p>
+
+        <div class="ellipses-container">
+            <h2 class="ellipses-greeting">Hello</h2>
+            <div class="ellipses ellipses-outer-thin">
+                <div class="ellipses ellipses-orbit"></div>
+            </div>
+            <div class="ellipses ellipses-outer-thick"></div>
+        </div>
+
+        <div class="hero-scroller">
+            <p class="page-indicator">home</p>
+            <div class="timeline">
+                <span class="timeline-unit"></span>
+                <span class="timeline-unit active"></span>
+                <span class="timeline-unit"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PARALLAX SCROLL SECTION ==================== -->
+<section id="parallax-section" class="parallax-section">
+<svg class="parallax" viewBox="0 0 750 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <!-- grad1: Sun gradient -->
+        <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+            <stop id="sun-grad-stop1" offset="0%" stop-color="#FDB813"/>
+            <stop id="sun-grad-stop2" offset="100%" stop-color="#F8961E"/>
+        </radialGradient>
+
+        <!-- grad2: Sky blue -->
+        <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4A90D9"/>
+            <stop offset="100%" stop-color="#87CEEB"/>
+        </linearGradient>
+
+        <!-- grad3: Hill far back -->
+        <linearGradient id="grad3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8FB996"/>
+            <stop offset="100%" stop-color="#5A8F6A"/>
+        </linearGradient>
+
+        <!-- grad4: Hill mid -->
+        <linearGradient id="grad4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5A8F6A"/>
+            <stop offset="100%" stop-color="#3D6B4F"/>
+        </linearGradient>
+
+        <!-- grad5: Hill near -->
+        <linearGradient id="grad5" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3D6B4F"/>
+            <stop offset="100%" stop-color="#2D4F3C"/>
+        </linearGradient>
+
+        <!-- grad6: Dark hill -->
+        <linearGradient id="grad6" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2D4F3C"/>
+            <stop offset="100%" stop-color="#1A3028"/>
+        </linearGradient>
+
+        <!-- grad7: Night hill 1 -->
+        <linearGradient id="grad7" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1A1A2E"/>
+            <stop offset="100%" stop-color="#0D0D1A"/>
+        </linearGradient>
+
+        <!-- grad8: Night hill 2 -->
+        <linearGradient id="grad8" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#16213E"/>
+            <stop offset="100%" stop-color="#0B1120"/>
+        </linearGradient>
+
+        <!-- grad9: Night hill 3 -->
+        <linearGradient id="grad9" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0F3460"/>
+            <stop offset="100%" stop-color="#071A30"/>
+        </linearGradient>
+
+        <!-- lg4: Cloud light -->
+        <radialGradient id="lg4" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0.3)"/>
+        </radialGradient>
+
+        <!-- lg5: Cloud medium -->
+        <radialGradient id="lg5" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.8)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0.2)"/>
+        </radialGradient>
+
+        <!-- lg6: Cloud dark -->
+        <radialGradient id="lg6" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(200,210,220,0.7)"/>
+            <stop offset="100%" stop-color="rgba(200,210,220,0.1)"/>
+        </radialGradient>
+
+        <!-- lg7: Sunset cloud -->
+        <radialGradient id="lg7" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,150,100,0.6)"/>
+            <stop offset="100%" stop-color="rgba(255,150,100,0.1)"/>
+        </radialGradient>
+
+        <!-- lg8: Night cloud -->
+        <radialGradient id="lg8" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(30,30,60,0.5)"/>
+            <stop offset="100%" stop-color="rgba(30,30,60,0.1)"/>
+        </radialGradient>
+
+        <!-- bg_grad: Main sky gradient (radial, animated) -->
+        <radialGradient id="bg_grad" cx="375" cy="-50" r="600" gradientUnits="userSpaceOnUse">
+            <stop id="bg-grad-stop1" offset="0%" stop-color="#87CEEB"/>
+            <stop id="bg-grad-stop2" offset="100%" stop-color="#E0F7FA"/>
+        </radialGradient>
+
+        <!-- bg2-grad: Night sky -->
+        <linearGradient id="bg2-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#070720"/>
+            <stop offset="100%" stop-color="#03030A"/>
+        </linearGradient>
+
+        <!-- fstar-grad: Falling star -->
+        <linearGradient id="fstar-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </linearGradient>
+
+        <!-- linear-gradient: Generic 1 -->
+        <linearGradient id="linear-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5c3a1e"/>
+            <stop offset="100%" stop-color="#3D2414"/>
+        </linearGradient>
+
+        <!-- linear-gradient-2: Generic 2 -->
+        <linearGradient id="linear-gradient-2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a6741"/>
+            <stop offset="100%" stop-color="#2d4025"/>
+        </linearGradient>
+
+        <!-- linear-gradient-3: Generic 3 -->
+        <linearGradient id="linear-gradient-3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2d4025"/>
+            <stop offset="100%" stop-color="#1a2b15"/>
+        </linearGradient>
+
+        <!-- linear-gradient-4: Generic 4 -->
+        <linearGradient id="linear-gradient-4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a2b15"/>
+            <stop offset="100%" stop-color="#0d1a0a"/>
+        </linearGradient>
+
+        <!-- Moon glow filter -->
+        <filter id="moonGlow">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Star glow filter -->
+        <filter id="starGlow">
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- ============================================ -->
+    <!-- SCENE 1: DAY LANDSCAPE                      -->
+    <!-- ============================================ -->
+    <g id="scene1">
+        <!-- Sky background -->
+        <rect x="0" y="0" width="750" height="500" fill="url(#bg_grad)"/>
+
+        <!-- Sun -->
+        <g id="sun">
+            <circle cx="375" cy="80" r="50" fill="url(#grad1)" opacity="0.95"/>
+            <circle cx="375" cy="80" r="65" fill="url(#grad1)" opacity="0.15"/>
+            <circle cx="375" cy="80" r="80" fill="url(#grad1)" opacity="0.06"/>
+        </g>
+
+        <!-- Clouds group -->
+        <g id="clouds">
+            <g id="cloud1" opacity="0.85">
+                <ellipse cx="120" cy="100" rx="50" ry="16" fill="rgba(255,255,255,0.8)"/>
+                <ellipse cx="100" cy="95" rx="30" ry="12" fill="rgba(255,255,255,0.7)"/>
+                <ellipse cx="140" cy="92" rx="35" ry="14" fill="rgba(255,255,255,0.75)"/>
+                <ellipse cx="115" cy="88" rx="25" ry="10" fill="rgba(255,255,255,0.9)"/>
+            </g>
+            <g id="cloud2" opacity="0.7">
+                <ellipse cx="550" cy="130" rx="60" ry="18" fill="rgba(255,255,255,0.75)"/>
+                <ellipse cx="530" cy="124" rx="35" ry="14" fill="rgba(255,255,255,0.65)"/>
+                <ellipse cx="570" cy="120" rx="40" ry="15" fill="rgba(255,255,255,0.7)"/>
+                <ellipse cx="545" cy="116" rx="28" ry="11" fill="rgba(255,255,255,0.85)"/>
+            </g>
+            <g id="cloud3" opacity="0.6">
+                <ellipse cx="300" cy="70" rx="45" ry="14" fill="rgba(255,255,255,0.7)"/>
+                <ellipse cx="280" cy="64" rx="28" ry="11" fill="rgba(255,255,255,0.6)"/>
+                <ellipse cx="320" cy="62" rx="32" ry="12" fill="rgba(255,255,255,0.65)"/>
+            </g>
+            <g id="cloud4" opacity="0.5">
+                <ellipse cx="650" cy="85" rx="40" ry="12" fill="rgba(255,255,255,0.65)"/>
+                <ellipse cx="635" cy="80" rx="25" ry="9" fill="rgba(255,255,255,0.55)"/>
+                <ellipse cx="665" cy="78" rx="28" ry="10" fill="rgba(255,255,255,0.6)"/>
+            </g>
+        </g>
+
+        <!-- Hills group - Scene 1 (back to front) -->
+        <g id="hills">
+            <!-- h1-1: Farthest mountains - soft, wide, gentle peaks -->
+            <path id="h1-1" fill="#8FB996" opacity="0.6" d="M-50,350 C-50,350 -20,330 10,325 C25,322 40,318 55,310 C65,305 78,295 95,288 C108,283 120,280 135,278 C150,276 165,275 180,272 C190,270 200,265 215,258 C230,251 245,242 260,238 C275,234 285,233 295,235 C305,237 315,240 325,238 C335,236 345,230 358,222 C368,216 380,208 395,202 C410,196 425,195 440,198 C450,200 458,204 465,202 C475,199 488,190 505,185 C518,181 530,180 545,182 C555,183 565,186 575,184 C588,181 600,174 615,170 C628,167 640,168 650,172 C660,175 668,180 678,178 C690,175 705,168 720,165 C735,163 748,164 758,168 C768,172 775,178 780,185 L800,500 L-50,500 Z"/>
+
+            <!-- h1-2: Second mountain range - slightly more defined -->
+            <path id="h1-2" fill="#7BAF82" opacity="0.7" d="M-50,380 C-50,380 -30,370 -10,362 C5,355 18,348 30,340 C42,333 55,325 70,318 C82,312 95,308 108,305 C120,302 132,300 145,296 C155,293 165,288 178,280 C192,272 205,262 218,258 C228,255 238,256 248,260 C258,264 268,270 278,268 C290,265 302,255 318,248 C330,243 342,240 355,238 C368,236 380,236 390,240 C400,244 408,250 418,248 C430,245 445,235 462,228 C475,223 488,220 500,222 C510,224 518,228 528,226 C540,223 555,215 572,210 C585,206 598,205 610,208 C620,210 628,215 638,212 C650,208 665,200 682,195 C695,191 708,190 720,192 C730,194 738,198 748,195 C758,192 770,186 780,182 L800,500 L-50,500 Z"/>
+
+            <!-- h1-3: Third layer - rolling green hills -->
+            <path id="h1-3" fill="#6A9E70" opacity="0.8" d="M-50,400 C-50,400 -25,388 0,378 C18,370 35,362 50,355 C62,350 75,345 90,338 C105,331 118,322 135,315 C148,310 160,308 172,310 C182,312 190,316 200,312 C212,307 228,295 248,288 C262,283 275,282 288,284 C298,286 308,290 318,288 C330,284 345,275 362,268 C378,262 392,258 405,260 C415,261 422,265 432,262 C445,258 460,248 478,242 C492,237 505,236 518,238 C530,240 540,244 550,242 C562,239 575,230 592,225 C605,221 618,220 630,222 C640,224 648,228 658,226 C670,222 685,214 702,208 C715,204 728,203 740,206 C750,208 758,212 768,210 L800,500 L-50,500 Z"/>
+
+            <!-- h1-4: Fourth layer - deeper green, forest edge -->
+            <path id="h1-4" fill="#4A8652" opacity="0.85" d="M-50,420 C-50,420 -20,408 5,398 C25,390 42,382 58,375 C68,371 78,367 92,360 C108,352 125,342 142,335 C155,330 165,328 178,330 C188,332 195,336 205,334 C218,330 232,320 250,312 C265,306 278,304 290,306 C300,308 308,312 318,310 C330,306 345,298 362,290 C375,284 388,280 402,278 C415,276 425,278 435,282 C442,285 448,290 458,288 C470,284 485,275 502,268 C518,262 532,260 545,262 C555,264 562,268 572,266 C585,262 600,254 618,248 C632,243 645,242 658,244 C668,246 675,250 685,248 C698,244 712,236 728,230 C742,225 755,224 765,228 L800,500 L-50,500 Z"/>
+
+            <!-- h1-5: Fifth layer - dark green hills -->
+            <path id="h1-5" fill="#3D6B4F" opacity="0.9" d="M-50,435 C-50,435 -15,422 15,412 C35,405 52,398 68,390 C80,384 92,378 108,370 C122,363 138,354 155,348 C168,343 178,342 190,344 C200,346 208,350 218,348 C230,344 245,335 262,328 C278,322 292,318 305,320 C315,322 322,326 332,324 C345,320 360,310 378,302 C392,296 405,293 418,295 C428,297 435,300 445,298 C458,294 472,285 490,278 C505,272 518,270 530,272 C540,274 548,278 558,276 C570,272 585,264 602,258 C615,253 628,252 640,254 C650,256 658,260 668,258 C680,254 695,246 712,240 C725,235 738,234 750,238 C758,240 765,245 772,242 L800,500 L-50,500 Z"/>
+
+            <!-- h1-6: Detailed forest silhouette - close trees and foliage -->
+            <path id="h1-6" fill="#2D5A3E" opacity="0.92" d="M-50,455 C-50,455 -40,448 -30,445 L-25,443 C-22,438 -18,430 -15,425 C-12,422 -8,420 -5,422 C-2,425 0,430 3,432 C5,430 8,425 12,420 C15,416 18,412 22,410 C25,408 28,410 30,414 C32,418 33,422 35,425 C37,422 40,416 44,412 C47,408 50,405 53,402 C56,400 60,398 63,400 C66,402 68,406 70,410 C72,414 74,418 76,420 C78,418 82,412 86,408 C89,405 92,402 95,400 C98,398 102,397 105,400 C108,403 110,408 112,412 C114,416 116,420 118,422 C120,418 124,410 128,405 C131,401 134,398 138,396 C141,394 145,394 148,397 C151,400 153,405 155,410 C157,414 159,418 161,420 C163,416 167,408 172,402 C176,397 180,393 184,390 C187,388 191,388 194,390 C197,393 199,398 201,402 C203,406 205,410 207,412 C209,408 213,400 218,394 C222,389 226,386 230,384 C233,382 237,383 240,386 C243,389 245,394 247,398 C249,402 251,406 253,408 C255,405 258,398 262,393 C265,389 268,386 272,384 C275,382 278,383 281,386 C284,389 286,394 288,398 C290,402 292,406 294,408 C296,404 300,396 305,390 C309,385 313,382 318,380 C322,378 326,379 329,382 C332,385 334,390 336,395 C338,399 340,403 342,405 C344,401 348,393 353,388 C357,384 361,381 365,380 C368,379 371,380 374,383 C377,386 379,391 381,395 C383,399 385,403 387,405 C389,401 393,393 398,387 C402,382 406,379 410,378 C413,377 417,378 420,381 C423,384 425,389 427,393 C429,397 431,401 433,403 C435,399 439,391 444,385 C448,380 452,377 456,376 C459,375 463,376 466,379 C469,382 471,387 473,391 C475,395 477,399 479,401 C481,397 485,389 490,383 C494,378 498,375 502,374 C505,373 509,374 512,377 C515,380 517,385 519,389 C521,393 523,397 525,399 C527,395 531,387 536,381 C540,376 544,373 548,372 C551,371 555,372 558,375 C561,378 563,383 565,387 C567,391 569,395 571,397 C573,393 577,385 582,380 C586,376 590,373 594,372 C597,371 601,372 604,375 C607,378 609,383 611,387 C613,391 615,395 617,397 C619,393 623,385 628,380 C632,376 636,373 640,372 C643,371 647,372 650,375 C653,378 655,383 657,387 C659,391 661,395 663,397 C665,394 669,387 674,382 C678,378 682,375 686,374 C689,373 693,374 696,377 C699,380 701,385 703,389 C705,393 707,396 710,398 C712,395 716,388 721,383 C725,379 728,376 732,375 C735,374 738,375 741,378 C744,381 746,386 748,390 C750,394 752,398 755,400 C758,398 762,393 766,390 C770,387 775,385 780,385 L800,500 L-50,500 Z"/>
+
+            <!-- h1-7: Near trees - dark silhouettes -->
+            <path id="h1-7" fill="#1A4030" opacity="0.95" d="M-50,470 C-50,470 -35,462 -20,458 C-10,455 0,450 10,445 C15,442 20,438 25,436 C28,434 32,435 35,438 C38,441 40,446 42,448 C44,445 48,438 53,434 C57,430 62,428 66,430 C70,432 73,438 75,442 C78,438 82,430 88,426 C92,423 97,422 101,424 C105,427 108,432 110,436 C113,432 118,424 124,420 C128,417 133,416 137,418 C141,420 144,425 146,429 C148,425 153,418 159,414 C163,411 168,410 172,412 C176,414 179,420 181,424 C184,419 189,412 195,408 C200,405 205,404 209,406 C213,408 216,414 218,418 C221,413 226,406 232,402 C237,399 242,398 246,400 C250,402 253,408 255,412 C258,407 263,400 269,396 C274,393 279,392 283,394 C287,396 290,402 292,406 C295,402 300,395 306,392 C310,389 315,388 319,390 C323,392 326,397 328,401 C330,396 335,389 341,385 C346,382 351,381 355,383 C359,385 362,391 364,395 C367,390 372,383 378,379 C383,376 388,375 392,377 C396,379 399,385 401,389 C404,384 409,377 415,373 C420,370 425,369 429,371 C433,373 436,379 438,383 C441,378 446,371 452,367 C457,364 462,363 466,365 C470,367 473,373 475,377 C478,372 483,365 489,361 C494,358 499,357 503,359 C507,361 510,367 512,371 C515,367 520,360 526,356 C531,353 536,352 540,354 C544,356 547,362 549,366 C552,361 557,354 563,350 C568,347 573,346 577,348 C581,350 584,356 586,360 C589,356 594,349 600,345 C605,342 610,341 614,343 C618,345 621,351 623,355 C626,350 631,343 637,339 C642,336 647,335 651,337 C655,339 658,345 660,349 C663,344 668,337 674,334 C679,331 684,330 688,332 C692,334 695,340 697,344 C700,340 705,333 711,330 C715,327 720,326 724,328 C728,330 731,336 733,340 C736,336 740,330 745,328 C750,326 755,327 759,330 C763,333 766,338 769,342 C772,338 776,333 780,330 L800,500 L-50,500 Z"/>
+
+            <!-- h1-8: Near foreground bushes -->
+            <path id="h1-8" fill="#0F2E20" opacity="0.97" d="M-50,480 C-50,480 -30,474 -10,470 C5,467 18,462 30,458 C38,455 45,452 52,449 C58,447 65,445 70,447 C75,449 78,454 82,452 C88,449 95,442 105,438 C112,435 120,434 126,436 C132,438 136,443 141,441 C148,438 158,430 170,426 C178,424 186,424 192,427 C198,430 202,436 208,434 C216,430 228,422 242,418 C252,415 262,416 268,419 C274,422 278,428 284,426 C292,422 304,414 318,410 C328,407 338,408 344,411 C350,414 354,420 360,418 C368,414 380,406 394,402 C404,399 414,400 420,403 C426,406 430,412 436,410 C444,406 456,398 470,395 C480,393 490,394 496,396 C502,398 506,402 512,400 C520,396 532,388 548,385 C558,383 568,384 574,387 C580,390 584,396 590,394 C598,390 610,382 625,378 C635,375 645,376 651,379 C657,382 661,388 668,386 C676,382 688,374 702,370 C712,367 722,368 728,371 C734,374 738,380 745,378 C752,375 762,368 772,365 L800,500 L-50,500 Z"/>
+
+            <!-- h1-9: Closest foreground - ground level -->
+            <path id="h1-9" fill="#0A2018" d="M-50,490 C-50,490 -20,485 10,482 C30,480 50,478 70,475 C85,473 100,470 115,468 C130,466 145,465 160,464 C175,463 190,463 205,462 C220,462 240,461 260,460 C280,459 300,458 320,458 C340,458 360,458 380,458 C400,458 420,458 440,459 C460,460 480,461 500,462 C520,463 540,464 560,465 C580,466 600,468 620,470 C640,472 660,474 680,476 C700,478 720,480 740,482 C755,484 770,486 780,488 L800,500 L-50,500 Z"/>
+        </g>
+
+        <!-- Info group: scroll down arrow and text -->
+        <g id="info" opacity="0.9">
+            <g transform="translate(355, 420)">
+                <line id="arrow" x1="20" y1="0" x2="20" y2="30" stroke="#fffddb" stroke-width="1.5" stroke-linecap="round"/>
+                <polyline points="12,22 20,30 28,22" stroke="#fffddb" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text id="text" x="20" y="48" text-anchor="middle" fill="#fffddb" font-family="Montserrat, sans-serif" font-size="7" letter-spacing="2" text-transform="uppercase">SCROLL DOWN</text>
+            </g>
+        </g>
+
+        <!-- SVG Bird -->
+        <g id="svgBird" transform="translate(100, 180)">
+            <path id="svgBird-wing" d="M0,0 C5,-8 15,-12 25,-8 C20,-4 10,-2 5,0 C10,2 20,4 25,8 C15,12 5,8 0,0 Z" fill="#2D4F3C" opacity="0.8"/>
+            <circle cx="26" cy="0" r="1.5" fill="#1A3028"/>
+        </g>
+
+        <!-- Big clouds (parallax drift) -->
+        <g id="cloudsBig">
+            <g id="cloudsBig-L" opacity="0.4">
+                <ellipse cx="-30" cy="200" rx="80" ry="25" fill="rgba(255,255,255,0.4)"/>
+                <ellipse cx="-60" cy="190" rx="50" ry="18" fill="rgba(255,255,255,0.3)"/>
+                <ellipse cx="0" cy="185" rx="55" ry="20" fill="rgba(255,255,255,0.35)"/>
+            </g>
+            <g id="cloudsBig-R" opacity="0.4">
+                <ellipse cx="780" cy="220" rx="75" ry="22" fill="rgba(255,255,255,0.35)"/>
+                <ellipse cx="810" cy="210" rx="50" ry="16" fill="rgba(255,255,255,0.3)"/>
+                <ellipse cx="755" cy="205" rx="55" ry="18" fill="rgba(255,255,255,0.3)"/>
+            </g>
+        </g>
+
+        <!-- Starting clouds (parallax drift) -->
+        <g id="cloudsStart">
+            <g id="cloudStart-L" opacity="0.3">
+                <ellipse cx="50" cy="250" rx="65" ry="20" fill="rgba(255,255,255,0.3)"/>
+                <ellipse cx="25" cy="242" rx="40" ry="14" fill="rgba(255,255,255,0.25)"/>
+            </g>
+            <g id="cloudStart-R" opacity="0.3">
+                <ellipse cx="700" cy="260" rx="60" ry="18" fill="rgba(255,255,255,0.3)"/>
+                <ellipse cx="725" cy="252" rx="38" ry="13" fill="rgba(255,255,255,0.25)"/>
+            </g>
+        </g>
+    </g>
+
+    <!-- ============================================ -->
+    <!-- SCENE 2: TWILIGHT / NIGHT TRANSITION        -->
+    <!-- ============================================ -->
+    <g id="scene2">
+        <!-- Bats group -->
+        <g id="bats">
+            <g id="bat-1" transform="translate(350, 250)" opacity="0">
+                <g class="bat-wing-left" transform="translate(-8, 0)">
+                    <path d="M0,0 C-3,-5 -8,-8 -14,-6 C-10,-3 -6,-1 -3,0 Z" fill="#1a1a2e"/>
+                </g>
+                <ellipse cx="0" cy="0" rx="3" ry="2" fill="#1a1a2e"/>
+                <g class="bat-wing-right" transform="translate(8, 0)">
+                    <path d="M0,0 C3,-5 8,-8 14,-6 C10,-3 6,-1 3,0 Z" fill="#1a1a2e"/>
+                </g>
+            </g>
+            <g id="bat-2" transform="translate(400, 230)" opacity="0">
+                <g class="bat-wing-left" transform="translate(-6, 0)">
+                    <path d="M0,0 C-2,-4 -6,-6 -11,-5 C-8,-2 -5,-1 -2,0 Z" fill="#16213e"/>
+                </g>
+                <ellipse cx="0" cy="0" rx="2.5" ry="1.5" fill="#16213e"/>
+                <g class="bat-wing-right" transform="translate(6, 0)">
+                    <path d="M0,0 C2,-4 6,-6 11,-5 C8,-2 5,-1 2,0 Z" fill="#16213e"/>
+                </g>
+            </g>
+            <g id="bat-3" transform="translate(320, 270)" opacity="0">
+                <g class="bat-wing-left" transform="translate(-7, 0)">
+                    <path d="M0,0 C-2.5,-4.5 -7,-7 -12,-5.5 C-9,-2.5 -5.5,-1 -2.5,0 Z" fill="#0f3460"/>
+                </g>
+                <ellipse cx="0" cy="0" rx="2.8" ry="1.8" fill="#0f3460"/>
+                <g class="bat-wing-right" transform="translate(7, 0)">
+                    <path d="M0,0 C2.5,-4.5 7,-7 12,-5.5 C9,-2.5 5.5,-1 2.5,0 Z" fill="#0f3460"/>
+                </g>
+            </g>
+        </g>
+
+        <!-- Hills group - Scene 2 (night silhouettes) -->
+        <g id="hills2">
+            <!-- h2-1: Detailed tree silhouette (starts opacity 0, fades in) -->
+            <path id="h2-1" fill="#0D0D1A" opacity="0" d="M-50,380 C-50,380 -40,375 -30,370 C-25,367 -20,362 -15,358 C-12,355 -8,350 -5,347 C-2,344 2,342 5,340 C8,337 10,333 12,330 C14,327 16,322 18,318 C20,315 22,312 25,310 C28,308 32,308 35,310 C38,312 40,316 42,320 C44,324 46,328 48,330 C50,327 53,320 57,315 C60,311 64,308 68,306 C72,304 76,305 79,308 C82,311 84,316 86,320 C88,324 90,328 92,330 C94,326 98,318 103,312 C107,307 112,304 116,302 C120,300 124,301 127,304 C130,307 132,312 134,316 C136,320 138,324 140,326 C142,322 146,314 151,308 C155,303 160,300 164,298 C168,296 172,297 175,300 C178,303 180,308 182,312 C184,316 186,320 188,322 C190,318 194,310 199,304 C203,299 208,296 212,295 C216,293 220,295 223,298 C226,301 228,306 230,310 C232,314 234,318 236,320 C238,316 242,308 247,302 C251,297 256,294 260,293 C264,292 268,294 271,297 C274,300 276,305 278,309 C280,313 282,317 284,319 C286,315 290,307 295,301 C299,296 304,293 308,292 C312,291 316,293 319,296 C322,299 324,304 326,308 C328,312 330,316 332,318 C334,314 338,306 343,300 C347,295 352,292 356,291 C360,290 364,292 367,295 C370,298 372,303 374,307 C376,311 378,315 380,317 C382,312 386,304 391,298 C396,293 401,290 405,289 C409,288 413,290 416,293 C419,296 421,302 423,306 C425,310 427,314 429,316 C431,312 435,304 440,298 C444,293 449,290 453,289 C457,288 461,290 464,293 C467,296 469,302 471,306 C473,310 475,314 477,316 C479,312 483,304 488,298 C492,293 497,290 501,289 C505,288 509,290 512,293 C515,296 517,302 519,306 C521,310 523,314 525,316 C527,312 531,304 536,298 C540,293 545,290 549,289 C553,288 557,290 560,293 C563,296 565,302 567,306 C569,310 571,314 573,316 C575,312 579,304 584,298 C588,293 593,290 597,289 C601,288 605,290 608,293 C611,296 613,302 615,306 C617,310 619,314 621,316 C623,312 627,304 632,298 C636,293 641,290 645,289 C649,288 653,290 656,293 C659,296 661,302 663,306 C665,310 667,314 669,316 C671,312 675,305 680,300 C684,296 689,293 693,292 C697,291 701,293 704,296 C707,299 709,304 711,308 C713,312 715,316 717,318 C719,314 723,306 728,300 C732,295 737,292 741,291 C745,290 749,292 752,295 C755,298 757,303 759,307 C761,311 763,315 765,317 C767,314 770,309 774,305 C778,302 782,300 786,300 L800,500 L-50,500 Z"/>
+
+            <!-- h2-2: Night mountains far -->
+            <path id="h2-2" fill="#1A1A2E" d="M-50,400 C-50,400 -20,385 10,375 C30,368 50,360 75,352 C95,346 115,342 135,340 C155,338 175,340 195,336 C215,332 235,322 260,315 C280,310 300,308 320,310 C340,312 355,318 375,315 C395,312 415,302 440,295 C460,290 480,288 500,290 C520,292 535,298 555,295 C575,292 600,282 625,275 C645,270 665,268 685,270 C705,272 720,278 740,275 C755,273 770,268 780,265 L800,500 L-50,500 Z"/>
+
+            <!-- h2-3: Night hills mid -->
+            <path id="h2-3" fill="#16213E" d="M-50,420 C-50,420 -15,405 20,395 C45,388 70,382 95,376 C115,372 135,368 155,366 C175,364 195,366 215,362 C235,358 260,348 285,342 C305,338 325,336 345,338 C365,340 380,346 400,342 C420,338 445,328 470,322 C490,318 510,316 530,318 C548,320 562,325 580,322 C600,318 625,308 650,302 C670,298 690,296 708,298 C725,300 738,305 752,302 C762,300 772,296 780,293 L800,500 L-50,500 Z"/>
+
+            <!-- h2-4: Night hills closer -->
+            <path id="h2-4" fill="#0F3460" d="M-50,440 C-50,440 -10,425 25,415 C50,408 75,402 100,396 C120,392 140,388 162,386 C182,384 202,386 222,382 C242,378 265,368 290,362 C310,358 330,356 350,358 C368,360 382,365 400,362 C420,358 445,348 470,342 C490,338 510,336 530,338 C548,340 562,345 582,342 C602,338 625,328 650,322 C670,318 690,316 708,318 C722,320 735,324 750,322 C762,320 775,315 785,312 L800,500 L-50,500 Z"/>
+
+            <!-- h2-5: Night hills near -->
+            <path id="h2-5" fill="#0B1120" d="M-50,460 C-50,460 -5,445 30,435 C55,428 80,422 105,416 C128,411 148,408 170,406 C190,404 210,406 232,402 C252,398 275,388 300,382 C320,378 340,376 360,378 C378,380 392,385 410,382 C430,378 455,368 480,362 C500,358 520,356 540,358 C558,360 572,365 592,362 C612,358 635,348 660,342 C680,338 700,336 718,338 C732,340 745,344 758,342 C768,340 778,336 785,334 L800,500 L-50,500 Z"/>
+
+            <!-- h2-6: Night foreground -->
+            <path id="h2-6" fill="#070720" d="M-50,475 C-50,475 0,462 45,455 C75,450 105,446 135,442 C160,439 185,437 210,436 C235,435 260,436 285,434 C310,432 335,428 360,425 C385,422 410,420 435,420 C460,420 485,422 510,420 C535,418 560,414 585,412 C610,410 635,410 660,412 C685,414 705,418 725,416 C742,414 758,410 772,408 L800,500 L-50,500 Z"/>
+        </g>
+    </g>
+
+    <!-- ============================================ -->
+    <!-- SCENE 3: NIGHT SKY                          -->
+    <!-- ============================================ -->
+    <g id="scene3" style="visibility:hidden;">
+        <!-- Night sky background -->
+        <rect id="bg2" x="0" y="0" width="750" height="500" fill="url(#bg2-grad)"/>
+
+        <!-- Falling star -->
+        <g id="fstar">
+            <line id="falling-star" x1="0" y1="0" x2="15" y2="15" stroke="url(#fstar-grad)" stroke-width="2" stroke-linecap="round" opacity="0"/>
+        </g>
+
+        <!-- Moon with glow -->
+        <g transform="translate(580, 80)">
+            <circle id="moon-glow" cx="0" cy="0" r="35" fill="rgba(200,210,230,0.08)" filter="url(#moonGlow)"/>
+            <circle cx="0" cy="0" r="18" fill="rgba(220,225,240,0.9)"/>
+            <circle cx="-4" cy="-3" r="3" fill="rgba(200,205,215,0.5)"/>
+            <circle cx="5" cy="4" r="2" fill="rgba(200,205,215,0.4)"/>
+            <circle cx="-2" cy="6" r="1.5" fill="rgba(200,205,215,0.3)"/>
+        </g>
+
+        <!-- Stars group -->
+        <g id="stars">
+            <circle id="star1" class="star" cx="50" cy="40" r="1.2" fill="#fff" opacity="0.8" filter="url(#starGlow)"/>
+            <circle id="star2" class="star" cx="150" cy="60" r="0.8" fill="#fff" opacity="0.6"/>
+            <circle id="star3" class="star" cx="250" cy="30" r="1.0" fill="#fff" opacity="0.7" filter="url(#starGlow)"/>
+            <circle id="star4" class="star" cx="350" cy="50" r="0.7" fill="#fff" opacity="0.5"/>
+            <circle id="star5" class="star" cx="450" cy="25" r="1.1" fill="#fff" opacity="0.9" filter="url(#starGlow)"/>
+            <circle id="star6" class="star" cx="500" cy="70" r="0.6" fill="#fff" opacity="0.4"/>
+            <circle id="star7" class="star" cx="650" cy="35" r="0.9" fill="#fff" opacity="0.7"/>
+            <circle id="star8" class="star" cx="700" cy="55" r="0.8" fill="#fff" opacity="0.6" filter="url(#starGlow)"/>
+
+            <!-- Additional scattered stars -->
+            <circle class="star" cx="80" cy="90" r="0.5" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="120" cy="25" r="0.7" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="180" cy="105" r="0.6" fill="#fff" opacity="0.3"/>
+            <circle class="star" cx="220" cy="75" r="0.8" fill="#fff" opacity="0.6"/>
+            <circle class="star" cx="280" cy="95" r="0.5" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="310" cy="15" r="0.9" fill="#fff" opacity="0.7"/>
+            <circle class="star" cx="380" cy="85" r="0.4" fill="#fff" opacity="0.3"/>
+            <circle class="star" cx="420" cy="45" r="0.6" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="470" cy="100" r="0.7" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="520" cy="20" r="0.5" fill="#fff" opacity="0.6"/>
+            <circle class="star" cx="560" cy="55" r="0.8" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="600" cy="15" r="0.6" fill="#fff" opacity="0.7"/>
+            <circle class="star" cx="630" cy="90" r="0.4" fill="#fff" opacity="0.3"/>
+            <circle class="star" cx="680" cy="40" r="0.7" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="720" cy="80" r="0.5" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="100" cy="140" r="0.6" fill="#fff" opacity="0.3"/>
+            <circle class="star" cx="200" cy="130" r="0.5" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="340" cy="120" r="0.7" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="440" cy="135" r="0.4" fill="#fff" opacity="0.3"/>
+            <circle class="star" cx="550" cy="125" r="0.6" fill="#fff" opacity="0.4"/>
+            <circle class="star" cx="660" cy="115" r="0.5" fill="#fff" opacity="0.5"/>
+            <circle class="star" cx="740" cy="130" r="0.7" fill="#fff" opacity="0.3"/>
+
+            <!-- Star paths (small diamond shapes) -->
+            <path class="star" d="M75,65 L76,62 L77,65 L76,68 Z" fill="#fff" opacity="0.6"/>
+            <path class="star" d="M480,42 L481,39 L482,42 L481,45 Z" fill="#fff" opacity="0.5"/>
+            <path class="star" d="M620,72 L621.5,68 L623,72 L621.5,76 Z" fill="#fff" opacity="0.7" filter="url(#starGlow)"/>
+            <path class="star" d="M160,48 L161,45 L162,48 L161,51 Z" fill="#fff" opacity="0.4"/>
+            <path class="star" d="M395,18 L396,15 L397,18 L396,21 Z" fill="#fff" opacity="0.6"/>
+        </g>
+
+        <!-- Night hills - Scene 3 -->
+        <g id="hills3">
+            <!-- h3-1: Far night mountains -->
+            <path id="h3-1" fill="#0D0D24" d="M-50,350 C-50,350 -10,330 30,320 C55,314 80,310 110,305 C135,301 160,298 185,300 C210,302 235,308 260,305 C285,302 310,292 340,285 C365,280 390,278 415,280 C440,282 460,288 485,285 C510,282 540,272 570,266 C595,262 620,260 645,262 C665,264 685,268 705,266 C722,264 740,260 755,258 C770,256 782,256 790,258 L800,500 L-50,500 Z"/>
+
+            <!-- h3-2: Mid night hills -->
+            <path id="h3-2" fill="#0A0A1E" d="M-50,380 C-50,380 -5,365 35,355 C60,348 85,342 115,338 C140,335 165,334 190,336 C215,338 240,344 265,340 C290,336 315,326 345,320 C370,316 395,314 420,316 C445,318 465,324 490,320 C515,316 545,306 575,300 C600,296 625,294 650,296 C672,298 692,302 712,300 C728,298 745,294 758,292 C770,290 780,290 790,292 L800,500 L-50,500 Z"/>
+
+            <!-- h3-3: Near night hills -->
+            <path id="h3-3" fill="#070718" d="M-50,410 C-50,410 0,395 45,385 C72,379 98,374 128,370 C155,367 180,366 205,368 C230,370 255,376 280,372 C305,368 332,358 362,352 C388,348 412,346 438,348 C462,350 482,356 508,352 C532,348 562,338 592,332 C618,328 642,326 668,328 C690,330 710,334 730,332 C745,330 760,326 772,324 L800,500 L-50,500 Z"/>
+
+            <!-- h3-4: Ground level night -->
+            <path id="h3-4" fill="#050512" d="M-50,440 C-50,440 5,425 55,415 C85,409 115,404 148,400 C175,397 200,396 228,398 C255,400 280,406 308,402 C335,398 365,388 395,382 C422,378 448,376 475,378 C500,380 522,385 550,382 C575,378 605,368 635,362 C660,358 685,356 710,358 C730,360 748,364 762,362 C774,360 784,356 792,354 L800,500 L-50,500 Z"/>
+
+            <!-- h3-5: Closest night ground -->
+            <path id="h3-5" fill="#03030A" d="M-50,465 C-50,465 10,455 60,448 C95,443 130,440 165,438 C195,436 225,436 255,438 C280,440 305,444 335,442 C360,440 390,434 420,430 C448,427 475,426 502,428 C528,430 550,434 578,432 C605,430 635,424 665,420 C690,417 715,416 738,418 C755,420 770,424 782,422 L800,500 L-50,500 Z"/>
+
+            <!-- Info2: Scroll back indicator -->
+            <g id="info2" transform="translate(355, 420)" opacity="0.7">
+                <line id="arrow2" x1="20" y1="30" x2="20" y2="0" stroke="#fffddb" stroke-width="1.5" stroke-linecap="round"/>
+                <polyline points="12,8 20,0 28,8" stroke="#fffddb" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text id="text2" x="20" y="48" text-anchor="middle" fill="#fffddb" font-family="Montserrat, sans-serif" font-size="7" letter-spacing="2">SCROLL BACK</text>
+            </g>
+        </g>
+
+        <!-- Dino silhouettes (Easter egg) -->
+        <g id="dinoL" transform="translate(80, 430)" opacity="0.15">
+            <path d="M0,0 C2,-5 5,-10 8,-12 C10,-14 13,-14 15,-12 C17,-10 18,-7 20,-5 C22,-3 24,-2 26,-3 C28,-4 29,-6 30,-4 C31,-2 31,0 30,2 L28,5 L25,5 L22,8 L18,8 L15,10 L10,10 L8,8 L5,8 L2,5 Z" fill="#0A0A1E"/>
+        </g>
+        <g id="dinoR" transform="translate(640, 425)" opacity="0.15">
+            <path d="M30,0 C28,-5 25,-10 22,-12 C20,-14 17,-14 15,-12 C13,-10 12,-7 10,-5 C8,-3 6,-2 4,-3 C2,-4 1,-6 0,-4 C-1,-2 -1,0 0,2 L2,5 L5,5 L8,8 L12,8 L15,10 L20,10 L22,8 L25,8 L28,5 Z" fill="#0A0A1E"/>
+        </g>
+    </g>
+</svg>
+</section>
+
+<!-- ==================== SERVICES SECTION ==================== -->
+<section id="services" class="services-section section">
+    <div class="section-inner">
+        <span class="section-label reveal">What We Do</span>
+        <h2 class="section-title reveal">Services that push <span class="text-accent">boundaries</span></h2>
+        <p class="section-text reveal">We specialize in building immersive digital experiences that blend creative design with cutting-edge technology.</p>
+
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-number">01</div>
+                <h3 class="service-title">Scroll Animations</h3>
+                <p class="service-desc">Parallax landscapes, scroll-driven narratives, and timeline-based animations that transform scrolling into storytelling. Built with GSAP ScrollTrigger.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">02</div>
+                <h3 class="service-title">3D Web Experiences</h3>
+                <p class="service-desc">Interactive Three.js environments, particle systems, and GPU-driven simulations that add depth and dimension to the web.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">03</div>
+                <h3 class="service-title">Motion Design</h3>
+                <p class="service-desc">Micro-interactions, page transitions, and choreographed UI animations that make interfaces feel alive and responsive.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">04</div>
+                <h3 class="service-title">Creative Development</h3>
+                <p class="service-desc">Custom cursor effects, generative art, SVG animations, and bespoke interactive components that set your brand apart.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ABOUT SECTION ==================== -->
+<section id="about" class="about-section section">
+    <div class="section-inner">
+        <div class="about-grid">
+            <div class="about-left">
+                <div class="about-image reveal">
+                    <!-- Decorative gradient box representing studio identity -->
+                    <div style="width:100%;height:100%;background:linear-gradient(135deg, #ff3831 0%, #181616 100%);display:flex;align-items:center;justify-content:center;">
+                        <span style="font-family:'Playfair Display',serif;font-size:4rem;color:#fffddb;opacity:0.3;">IS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-right">
+                <span class="section-label reveal">About Studio</span>
+                <h2 class="section-title reveal">We craft <em class="text-serif">digital</em> experiences through <span class="text-accent">motion</span></h2>
+                <p class="section-text reveal">
+                    INTERNITY STUDIO is a creative animation and motion design studio dedicated to crafting immersive digital experiences. We blend art and technology to create animations that captivate, engage, and inspire.
+                </p>
+                <p class="section-text reveal" style="margin-top:1.5rem;">
+                    From scroll-driven narratives to interactive 3D environments, our work pushes the boundaries of what's possible on the web. Every pixel is purposeful, every motion tells a story.
+                </p>
+
+                <div class="about-stats reveal">
+                    <div class="stat">
+                        <div class="stat-number" data-count="50">0+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" data-count="30">0+</div>
+                        <div class="stat-label">Clients</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" data-count="5">0+</div>
+                        <div class="stat-label">Years</div>
+                    </div>
+                </div>
+
+                <!-- Social Icons -->
+                <ul class="social-wrapper">
+                    <li class="social-icon facebook">
+                        <span class="social-tooltip">Facebook</span>
+                        <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path>
+                        </svg>
+                    </li>
+                    <li class="social-icon twitter">
+                        <span class="social-tooltip">Twitter</span>
+                        <svg height="1.2em" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429"></path>
+                        </svg>
+                    </li>
+                    <li class="social-icon instagram">
+                        <span class="social-tooltip">Instagram</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+                        </svg>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PORTFOLIO SECTION ==================== -->
+<section id="portfolio" class="portfolio-section section">
+    <div class="section-inner">
+        <span class="section-label reveal">Selected Work</span>
+        <h2 class="section-title reveal">Crafted with <span class="text-accent">precision</span></h2>
+
+        <div class="portfolio-grid">
+            <!-- Card 1 -->
+            <div class="portfolio-card">
+                <div class="portfolio-card-bg" style="background:linear-gradient(135deg, #ff3831, #ff6b35);"></div>
+                <div class="portfolio-card-overlay">
+                    <span class="portfolio-card-tag">Scroll Animation</span>
+                    <h3 class="portfolio-card-title">Parallax Landscapes</h3>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="portfolio-card">
+                <div class="portfolio-card-bg" style="background:linear-gradient(135deg, #1a1a2e, #16213e);"></div>
+                <div class="portfolio-card-overlay">
+                    <span class="portfolio-card-tag">3D Animation</span>
+                    <h3 class="portfolio-card-title">Interactive Particles</h3>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="portfolio-card">
+                <div class="portfolio-card-bg" style="background:linear-gradient(135deg, #0f3460, #533483);"></div>
+                <div class="portfolio-card-overlay">
+                    <span class="portfolio-card-tag">Motion Design</span>
+                    <h3 class="portfolio-card-title">Brand Animations</h3>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="portfolio-card">
+                <div class="portfolio-card-bg" style="background:linear-gradient(135deg, #e94560, #ff3831);"></div>
+                <div class="portfolio-card-overlay">
+                    <span class="portfolio-card-tag">UI Animation</span>
+                    <h3 class="portfolio-card-title">Micro-Interactions</h3>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:4rem;" class="reveal">
+            <button class="premium-btn">
+                <span class="text">View All Work</span>
+                <span>Explore</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TECHNOLOGIES SECTION ==================== -->
+<section id="tech" class="tech-section section">
+    <div class="section-inner" style="text-align:center;">
+        <span class="section-label reveal">Our Stack</span>
+        <h2 class="section-title reveal">Built with <span class="text-accent">modern</span> tools</h2>
+
+        <div class="tech-strip">
+            <div class="tech-item reveal">
+                <span class="tech-icon">GS</span>
+                <span class="tech-name">GSAP</span>
+            </div>
+            <div class="tech-item reveal">
+                <span class="tech-icon">3D</span>
+                <span class="tech-name">Three.js</span>
+            </div>
+            <div class="tech-item reveal">
+                <span class="tech-icon">LN</span>
+                <span class="tech-name">Lenis</span>
+            </div>
+            <div class="tech-item reveal">
+                <span class="tech-icon">FM</span>
+                <span class="tech-name">Framer Motion</span>
+            </div>
+            <div class="tech-item reveal">
+                <span class="tech-icon">SG</span>
+                <span class="tech-name">SVG Animation</span>
+            </div>
+            <div class="tech-item reveal">
+                <span class="tech-icon">WG</span>
+                <span class="tech-name">WebGL</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONTACT SECTION ==================== -->
+<section id="contact" class="contact-section section">
+    <div class="section-inner">
+        <span class="section-label reveal">Get In Touch</span>
+        <h2 class="section-title reveal">Let's create something <em class="text-serif">extraordinary</em></h2>
+
+        <div class="contact-grid">
+            <div class="contact-left">
+                <div class="contact-item reveal">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:abhiisingh240@gmail.com" class="contact-value contact-link">abhiisingh240@gmail.com</a>
+                </div>
+                <div class="contact-item reveal">
+                    <span class="contact-label">WhatsApp</span>
+                    <a href="https://wa.me/919580335854" target="_blank" class="contact-value contact-link">+91 9580335854</a>
+                </div>
+                <div class="contact-item reveal">
+                    <span class="contact-label">Location</span>
+                    <p class="contact-value">India</p>
+                </div>
+            </div>
+            <div class="contact-right reveal">
+                <p class="section-text">
+                    Have a project in mind? We'd love to hear about it. Whether it's a complex scroll animation, a 3D interactive experience, or motion design for your brand — let's make it happen.
+                </p>
+                <div style="margin-top:2rem;">
+                    <a href="mailto:abhiisingh240@gmail.com" class="premium-btn" style="text-decoration:none;">
+                        <span class="text">Start a Project</span>
+                        <span>Let's Go</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site-footer">
+    <div class="section-inner" style="text-align:center;">
+        <div class="footer-links">
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#portfolio">Work</a>
+            <a href="#tech">Tech</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <p class="footer-brand">INTERNITY STUDIO</p>
+        <p class="footer-credit">Designed & Developed by INTERNITY STUDIO - Abhishek Singh</p>
+    </div>
+</footer>
+
+<script src="js/main.js" type="module"></script>
+</body>
+</html>
