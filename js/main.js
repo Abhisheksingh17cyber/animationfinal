@@ -11,36 +11,49 @@
 // the entire module from crashing if the CDN is unreachable.
 
 // ============================================================
-// 1.  LENIS SMOOTH SCROLLING
+// 1.  LENIS SMOOTH SCROLLING  (wrapped in try-catch for CDN resilience)
 // ============================================================
 
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  direction: 'vertical',
-  gestureDirection: 'vertical',
-  smooth: true,
-  mouseMultiplier: 1,
-  smoothTouch: false,
-  touchMultiplier: 2,
-  infinite: false,
-});
+let lenis = null;
 
-// Keep Lenis stopped while the loader is visible
-lenis.stop();
+try {
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
 
-function raf(time) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
+    // Keep Lenis stopped while the loader is visible
+    lenis.stop();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Connect Lenis to GSAP ScrollTrigger so scrub-based animations stay in sync
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    }
+  } else {
+    console.warn('[main.js] Lenis not available – smooth scrolling disabled.');
+  }
+} catch (e) {
+  console.error('[main.js] Failed to initialize Lenis:', e);
+  lenis = null;
 }
-requestAnimationFrame(raf);
-
-// Connect Lenis to GSAP ScrollTrigger so scrub-based animations stay in sync
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => {
-  lenis.raf(time * 1000);
-});
-gsap.ticker.lagSmoothing(0);
 
 // ============================================================
 // 2.  LOADER LOGIC
@@ -56,9 +69,9 @@ window.addEventListener('load', () => {
       }, { once: true });
     }
     // Start smooth scrolling now that content is visible
-    lenis.start();
+    if (lenis) lenis.start();
     // Fire hero entrance animations
-    animateHeroEntry();
+    if (typeof gsap !== 'undefined') animateHeroEntry();
     // Fire text scramble on hero title
     initTextScramble();
   }, 4000);
@@ -66,7 +79,7 @@ window.addEventListener('load', () => {
 
 // Safety: if something goes wrong with the loader, ensure Lenis starts anyway
 setTimeout(() => {
-  try { lenis.start(); } catch (e) {}
+  try { if (lenis) lenis.start(); } catch (e) {}
 }, 6000);
 
 // ============================================================
@@ -76,7 +89,7 @@ setTimeout(() => {
 function animateHeroEntry() {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.from('.hero-header', {
+  tl.from('.site-header', {
     y: -50,
     opacity: 0,
     duration: 1,
@@ -110,7 +123,12 @@ function animateHeroEntry() {
 const torchToggle = document.getElementById('torch-toggle');
 if (torchToggle) {
   torchToggle.addEventListener('change', () => {
-    document.body.classList.toggle('light-mode');
+    const html = document.documentElement;
+    if (torchToggle.checked) {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+    }
   });
 }
 
@@ -121,60 +139,90 @@ if (torchToggle) {
 function initScrollRevealAnimations() {
   // Generic .reveal elements
   gsap.utils.toArray('.reveal').forEach((el) => {
-    gsap.from(el, {
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        end: 'top 50%',
-        toggleActions: 'play none none reverse',
-      },
-    });
+    gsap.fromTo(el,
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          end: 'top 55%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    );
   });
 
   // Section labels slide in from left
   gsap.utils.toArray('.section-label').forEach((el) => {
-    gsap.from(el, {
-      x: -30,
-      opacity: 0,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-      },
-    });
+    gsap.fromTo(el,
+      { x: -30, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+        },
+      }
+    );
   });
 
   // Section titles rise up
   gsap.utils.toArray('.section-title').forEach((el) => {
-    gsap.from(el, {
-      y: 80,
-      opacity: 0,
-      duration: 1.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-      },
-    });
+    gsap.fromTo(el,
+      { y: 60, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+        },
+      }
+    );
   });
 
   // Portfolio cards with stagger
   gsap.utils.toArray('.portfolio-card').forEach((card, i) => {
-    gsap.from(card, {
-      y: 100,
-      opacity: 0,
-      duration: 1,
-      delay: i * 0.15,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 85%',
-      },
-    });
+    gsap.fromTo(card,
+      { y: 80, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: i * 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+        },
+      }
+    );
+  });
+
+  // Service cards with stagger
+  gsap.utils.toArray('.service-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 60, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: i * 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+        },
+      }
+    );
   });
 
   // Stats counter animation
@@ -207,7 +255,7 @@ function initScrollRevealAnimations() {
 function initSVGParallax() {
   gsap.registerPlugin(ScrollTrigger);
 
-  const speed = 100;
+  const speed = 60;
 
   // ----------------------------------------------------------
   // Initial states
@@ -223,7 +271,7 @@ function initSVGParallax() {
     animation: scene1,
     trigger: '#parallax-section',
     start: 'top top',
-    end: '45% 100%',
+    end: '40% 100%',
     scrub: 3,
   });
 
@@ -270,10 +318,10 @@ function initSVGParallax() {
     scrub: 3,
   });
 
-  sunColour.to('#sun-grad-stop1', { attr: { 'stop-color': '#FF6B35' }, ease: 'power1.in' }, 0);
-  sunColour.to('#sun-grad-stop2', { attr: { 'stop-color': '#FF3864' }, ease: 'power1.in' }, 0);
-  sunColour.to('#bg-grad-stop1', { attr: { 'stop-color': '#2D1B69' }, ease: 'power1.in' }, 0);
-  sunColour.to('#bg-grad-stop2', { attr: { 'stop-color': '#0B0B2B' }, ease: 'power1.in' }, 0);
+  sunColour.to('#sun-grad-stop1', { attr: { 'stop-color': '#D4A574' }, ease: 'power1.in' }, 0);
+  sunColour.to('#sun-grad-stop2', { attr: { 'stop-color': '#C48B5C' }, ease: 'power1.in' }, 0);
+  sunColour.to('#bg-grad-stop1', { attr: { 'stop-color': '#2B1055' }, ease: 'power1.in' }, 0);
+  sunColour.to('#bg-grad-stop2', { attr: { 'stop-color': '#1a082e' }, ease: 'power1.in' }, 0);
 
   // ----------------------------------------------------------
   // SCENE 2 -- Night hills
@@ -283,7 +331,7 @@ function initSVGParallax() {
     animation: scene2,
     trigger: '#parallax-section',
     start: '15% top',
-    end: '65% 100%',
+    end: '45% 100%',
     scrub: 3,
   });
 
@@ -332,20 +380,20 @@ function initSVGParallax() {
   // ----------------------------------------------------------
   // SCENE 3 -- Ground / transition scene
   // ----------------------------------------------------------
-  gsap.set('#scene3', { y: 500, visibility: 'visible' });
+  gsap.set('#scene3', { y: 350, visibility: 'visible' });
 
   const scene3Tl = gsap.timeline();
   ScrollTrigger.create({
     animation: scene3Tl,
     trigger: '#parallax-section',
-    start: '50% top',
+    start: '65% top',
     end: '100% 100%',
     scrub: 3,
   });
 
   scene3Tl.to('#scene3', { y: 0, ease: 'power1.in' }, 0);
-  scene3Tl.to('#bg-grad-stop1', { attr: { 'stop-color': '#070720' }, ease: 'power1.in' }, 0);
-  scene3Tl.to('#bg-grad-stop2', { attr: { 'stop-color': '#03030A' }, ease: 'power1.in' }, 0);
+  scene3Tl.to('#bg-grad-stop1', { attr: { 'stop-color': '#0a0015' }, ease: 'power1.in' }, 0);
+  scene3Tl.to('#bg-grad-stop2', { attr: { 'stop-color': '#1a082e' }, ease: 'power1.in' }, 0);
 
   // Falling star
   const fallingStar = gsap.timeline({ repeat: -1, repeatDelay: 4 });
@@ -428,7 +476,7 @@ function initSVGParallax() {
 }
 
 // ============================================================
-// 7.  THREE.JS BIRD FLOCK CURSOR EFFECT
+// 7.  THREE.JS BIRD FLOCK CURSOR EFFECT  (InstancedMesh)
 // ============================================================
 
 async function initBirdFlock() {
@@ -441,7 +489,7 @@ async function initBirdFlock() {
   }
 
   // ----- Configuration -----
-  const BIRD_COUNT = 150;
+  const BIRD_COUNT = 200;
   const VISUAL_RANGE = 250;
   const SEPARATION_DIST = 180;
   const SPEED_LIMIT = 6.5;
@@ -456,6 +504,13 @@ async function initBirdFlock() {
   // ----- Scene -----
   const scene = new THREE.Scene();
   scene.background = null; // transparent
+
+  // Lighting (required for MeshStandardMaterial)
+  const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(1, 1, 1);
+  scene.add(dirLight);
 
   const camera = new THREE.PerspectiveCamera(
     60,
@@ -482,7 +537,7 @@ async function initBirdFlock() {
   scene.add(hitPlane);
 
   const raycaster = new THREE.Raycaster();
-  const mouseNDC = new THREE.Vector2(9999, 9999); // off-screen initially
+  const mouseNDC = new THREE.Vector2(9999, 9999);
   const mouseWorld = new THREE.Vector3(0, 0, 0);
   let mouseActive = false;
   let mouseIdleTimer = null;
@@ -501,53 +556,41 @@ async function initBirdFlock() {
     mouseActive = false;
   });
 
-  // ----- Bird geometry (single triangle per bird) -----
-  const birdGeo = new THREE.BufferGeometry();
-
-  // 3 vertices per bird, body triangle
-  const vertices = new Float32Array(BIRD_COUNT * 3 * 3);
-  const wingPhases = new Float32Array(BIRD_COUNT * 3); // per-vertex phase for wing flap
-  const birdIndices = new Float32Array(BIRD_COUNT * 3); // which bird index
-
+  // ----- Bird geometry (single triangle template) -----
   const wingSpan = 14;
   const bodyLen = 18;
 
-  for (let i = 0; i < BIRD_COUNT; i++) {
-    const base = i * 9; // 3 verts * 3 components
-    // Tip
-    vertices[base + 0] = 0;
-    vertices[base + 1] = 0;
-    vertices[base + 2] = -bodyLen / 2;
-    // Left wing
-    vertices[base + 3] = -wingSpan;
-    vertices[base + 4] = 0;
-    vertices[base + 5] = bodyLen / 2;
-    // Right wing
-    vertices[base + 6] = wingSpan;
-    vertices[base + 7] = 0;
-    vertices[base + 8] = bodyLen / 2;
+  const birdGeo = new THREE.BufferGeometry();
+  const verts = new Float32Array([
+    0, 0, -bodyLen / 2,      // tip
+    -wingSpan, 0, bodyLen / 2, // left wing
+    wingSpan, 0, bodyLen / 2,  // right wing
+  ]);
+  birdGeo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
 
-    // Phase offsets for wing flapping
-    const phase = Math.random() * Math.PI * 2;
-    wingPhases[i * 3 + 0] = 0; // tip doesn't flap
-    wingPhases[i * 3 + 1] = phase; // left wing
-    wingPhases[i * 3 + 2] = phase; // right wing (same phase, mirrored)
+  // ----- Material -----
+  const birdMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.85,
+    emissive: 0xffdba6,
+    emissiveIntensity: 0.15,
+    roughness: 0.5,
+    metalness: 0.3,
+  });
 
-    // Bird index per vertex
-    birdIndices[i * 3 + 0] = i;
-    birdIndices[i * 3 + 1] = i;
-    birdIndices[i * 3 + 2] = i;
-  }
-
-  birdGeo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-  birdGeo.setAttribute('wingPhase', new THREE.BufferAttribute(wingPhases, 1));
-  birdGeo.setAttribute('birdIndex', new THREE.BufferAttribute(birdIndices, 1));
+  // ----- InstancedMesh -----
+  const birdMesh = new THREE.InstancedMesh(birdGeo, birdMat, BIRD_COUNT);
+  birdMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  birdMesh.frustumCulled = false;
+  scene.add(birdMesh);
 
   // ----- Instance data -----
-  // We store offsets and velocities in plain arrays for the boid sim,
-  // then we build a custom shader material that reads per-bird transforms.
   const positions = [];
   const velocities = [];
+  const wingPhases = [];
+  const dummy = new THREE.Object3D();
 
   for (let i = 0; i < BIRD_COUNT; i++) {
     positions.push(new THREE.Vector3(
@@ -562,108 +605,14 @@ async function initBirdFlock() {
       (Math.random() - 0.5) * spd * 0.5,
       Math.sin(angle) * spd,
     ));
+    wingPhases.push(Math.random() * Math.PI * 2);
   }
-
-  // Flat array textures for GPU (offset + velocity)
-  const offsetArray = new Float32Array(BIRD_COUNT * 3);
-  const velocityArray = new Float32Array(BIRD_COUNT * 3);
-
-  function updateDataArrays() {
-    for (let i = 0; i < BIRD_COUNT; i++) {
-      offsetArray[i * 3 + 0] = positions[i].x;
-      offsetArray[i * 3 + 1] = positions[i].y;
-      offsetArray[i * 3 + 2] = positions[i].z;
-      velocityArray[i * 3 + 0] = velocities[i].x;
-      velocityArray[i * 3 + 1] = velocities[i].y;
-      velocityArray[i * 3 + 2] = velocities[i].z;
-    }
-  }
-  updateDataArrays();
-
-  const offsetAttr = new THREE.BufferAttribute(offsetArray, 3);
-  offsetAttr.setUsage(THREE.DynamicDrawUsage);
-  birdGeo.setAttribute('offset', offsetAttr);
-
-  const velAttr = new THREE.BufferAttribute(velocityArray, 3);
-  velAttr.setUsage(THREE.DynamicDrawUsage);
-  birdGeo.setAttribute('velocity', velAttr);
-
-  // ----- Material with wing flap shader -----
-  const birdMat = new THREE.MeshBasicMaterial({
-    color: 0xcccccc,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.85,
-  });
-
-  birdMat.onBeforeCompile = (shader) => {
-    shader.uniforms.uTime = { value: 0 };
-    birdMat.__shader = shader;
-
-    // Vertex shader injection
-    shader.vertexShader = shader.vertexShader.replace(
-      '#include <common>',
-      `
-      #include <common>
-      attribute float wingPhase;
-      attribute float birdIndex;
-      attribute vec3 offset;
-      attribute vec3 velocity;
-      uniform float uTime;
-      `,
-    );
-
-    shader.vertexShader = shader.vertexShader.replace(
-      '#include <begin_vertex>',
-      `
-      vec3 transformed = position;
-
-      // Wing flap: displace y of wing vertices based on sine wave
-      if (wingPhase > 0.0) {
-        float flap = sin(uTime * 8.0 + wingPhase) * 10.0;
-        // Left wing goes up, right wing goes up (same phase but mirrored via position.x sign)
-        transformed.y += flap * sign(transformed.x);
-      }
-
-      // Orient bird along velocity direction
-      vec3 vel = normalize(velocity);
-      vec3 forward = vec3(0.0, 0.0, -1.0);
-      // Simple rotation: rotate around Y to face velocity xz direction
-      float angleY = atan(vel.x, vel.z);
-      float cosA = cos(angleY);
-      float sinA = sin(angleY);
-      mat3 rotY = mat3(
-        cosA, 0.0, sinA,
-        0.0, 1.0, 0.0,
-        -sinA, 0.0, cosA
-      );
-      // Pitch based on vertical velocity
-      float pitch = asin(clamp(vel.y, -1.0, 1.0));
-      float cosP = cos(pitch);
-      float sinP = sin(pitch);
-      mat3 rotX = mat3(
-        1.0, 0.0, 0.0,
-        0.0, cosP, -sinP,
-        0.0, sinP, cosP
-      );
-      transformed = rotY * rotX * transformed;
-
-      // Translate to world position
-      transformed += offset;
-      `,
-    );
-  };
-
-  const birdMesh = new THREE.Mesh(birdGeo, birdMat);
-  birdMesh.frustumCulled = false;
-  scene.add(birdMesh);
 
   // ----- Boid physics -----
   const _v = new THREE.Vector3();
   const _center = new THREE.Vector3();
   const _avgVel = new THREE.Vector3();
   const _separation = new THREE.Vector3();
-  const _mouseTarget = new THREE.Vector3();
   const _wanderTarget = new THREE.Vector3(
     (Math.random() - 0.5) * BOUNDS.x,
     (Math.random() - 0.5) * BOUNDS.y * 0.5,
@@ -672,7 +621,6 @@ async function initBirdFlock() {
   let wanderTimer = 0;
 
   function updateBoids() {
-    // Periodically shift the wander target
     wanderTimer++;
     if (wanderTimer > 300) {
       wanderTimer = 0;
@@ -696,13 +644,9 @@ async function initBirdFlock() {
         if (i === j) continue;
         const dist = pos.distanceTo(positions[j]);
         if (dist < VISUAL_RANGE) {
-          // Cohesion
           _center.add(positions[j]);
-          // Alignment
           _avgVel.add(velocities[j]);
           neighbours++;
-
-          // Separation
           if (dist < SEPARATION_DIST) {
             _v.subVectors(pos, positions[j]);
             _v.divideScalar(Math.max(dist, 0.001));
@@ -715,16 +659,13 @@ async function initBirdFlock() {
         _center.divideScalar(neighbours);
         _v.subVectors(_center, pos).multiplyScalar(COHESION_FACTOR);
         vel.add(_v);
-
         _avgVel.divideScalar(neighbours);
         _v.subVectors(_avgVel, vel).multiplyScalar(ALIGNMENT_FACTOR);
         vel.add(_v);
       }
 
-      // Separation
       vel.add(_separation.multiplyScalar(SEPARATION_FACTOR));
 
-      // Mouse attraction or idle wandering
       if (mouseActive) {
         _v.subVectors(mouseWorld, pos).multiplyScalar(MOUSE_ATTRACT_FACTOR);
         vel.add(_v);
@@ -733,7 +674,6 @@ async function initBirdFlock() {
         vel.add(_v);
       }
 
-      // Soft boundary steering
       const margin = 0.9;
       if (pos.x > BOUNDS.x * margin) vel.x -= 0.5;
       if (pos.x < -BOUNDS.x * margin) vel.x += 0.5;
@@ -742,14 +682,33 @@ async function initBirdFlock() {
       if (pos.z > BOUNDS.z * margin) vel.z -= 0.5;
       if (pos.z < -BOUNDS.z * margin) vel.z += 0.5;
 
-      // Speed clamping
       const spd = vel.length();
       if (spd > SPEED_LIMIT) vel.multiplyScalar(SPEED_LIMIT / spd);
       if (spd < MIN_SPEED) vel.multiplyScalar(MIN_SPEED / spd);
 
-      // Integrate position
       pos.add(vel);
     }
+  }
+
+  // ----- Update instance matrices -----
+  function updateInstanceMatrices(elapsed) {
+    for (let i = 0; i < BIRD_COUNT; i++) {
+      dummy.position.copy(positions[i]);
+
+      // Orient along velocity
+      const vel = velocities[i];
+      const angleY = Math.atan2(vel.x, vel.z);
+      const pitch = Math.asin(Math.max(-1, Math.min(1, vel.y / Math.max(vel.length(), 0.001))));
+      dummy.rotation.set(pitch, angleY, 0);
+
+      // Wing flap via subtle scale oscillation on Y
+      const flap = Math.sin(elapsed * 8.0 + wingPhases[i]) * 0.3 + 1.0;
+      dummy.scale.set(1, flap, 1);
+
+      dummy.updateMatrix();
+      birdMesh.setMatrixAt(i, dummy.matrix);
+    }
+    birdMesh.instanceMatrix.needsUpdate = true;
   }
 
   // ----- Resize -----
@@ -778,15 +737,8 @@ async function initBirdFlock() {
     // Update boid physics
     updateBoids();
 
-    // Push data to GPU
-    updateDataArrays();
-    birdGeo.attributes.offset.needsUpdate = true;
-    birdGeo.attributes.velocity.needsUpdate = true;
-
-    // Update time uniform for wing flap
-    if (birdMat.__shader) {
-      birdMat.__shader.uniforms.uTime.value = elapsed;
-    }
+    // Update instance transforms
+    updateInstanceMatrices(elapsed);
 
     renderer.render(scene, camera);
   }
@@ -806,25 +758,47 @@ function initCustomCursor() {
   cursor.className = 'custom-cursor';
   document.body.appendChild(cursor);
 
+  const follower = document.createElement('div');
+  follower.className = 'custom-cursor-follower';
+  document.body.appendChild(follower);
+
+  let cursorX = 0, cursorY = 0;
+  let followerX = 0, followerY = 0;
+  let isHovering = false;
+
   document.addEventListener('mousemove', (e) => {
-    gsap.to(cursor, {
-      x: e.clientX - 4,
-      y: e.clientY - 4,
-      duration: 0.1,
-    });
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+    // Cursor dot follows immediately
+    cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
   });
+
+  // Smooth follower animation loop
+  function updateFollower() {
+    followerX += (cursorX - followerX) * 0.12;
+    followerY += (cursorY - followerY) * 0.12;
+    follower.style.left = followerX + 'px';
+    follower.style.top = followerY + 'px';
+    requestAnimationFrame(updateFollower);
+  }
+  requestAnimationFrame(updateFollower);
 
   // Scale up cursor on interactive elements
   const hoverTargets = document.querySelectorAll(
-    'a, button, .premium-btn, .social-icon, .portfolio-card',
+    'a, button, .premium-btn, .social-icon, .portfolio-card, .service-card, .tech-item, .torch-container, .site-header a, .nav-links a',
   );
 
   hoverTargets.forEach((el) => {
     el.addEventListener('mouseenter', () => {
-      gsap.to(cursor, { scale: 3, opacity: 0.5, duration: 0.3 });
+      isHovering = true;
+      cursor.classList.add('cursor-hover');
+      follower.classList.add('follower-hover');
     });
     el.addEventListener('mouseleave', () => {
-      gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 });
+      isHovering = false;
+      cursor.classList.remove('cursor-hover');
+      follower.classList.remove('follower-hover');
     });
   });
 }
@@ -905,8 +879,8 @@ class TextScramble {
 }
 
 function initTextScramble() {
-  const heroTitle = document.querySelector('.hero-title');
-  if (!heroTitle) return;
+  const heroSubtitle = document.querySelector('.hero-subtitle');
+  if (!heroSubtitle) return;
 
   const phrases = [
     'Creative Developer',
@@ -915,7 +889,7 @@ function initTextScramble() {
     'UI Engineer',
   ];
 
-  const scramble = new TextScramble(heroTitle);
+  const scramble = new TextScramble(heroSubtitle);
   let counter = 0;
 
   const next = () => {
@@ -952,9 +926,9 @@ function initHeroMouseParallax() {
       ease: 'power2.out',
     });
 
-    gsap.to('.hero-header', {
-      x: x * 8,
-      y: y * 8,
+    gsap.to('.site-header', {
+      x: x * 5,
+      y: y * 5,
       duration: 1.4,
       ease: 'power2.out',
     });
@@ -962,7 +936,70 @@ function initHeroMouseParallax() {
 }
 
 // ============================================================
-// 12.  ADDITIONAL UTILITIES
+// 12b. AI VISION PITCH (Gemini API)
+// ============================================================
+
+function initAIVisionPitch() {
+  const btn = document.getElementById('ai-vision-btn');
+  const input = document.getElementById('ai-vision-input');
+  const response = document.getElementById('ai-vision-response');
+  if (!btn || !input || !response) return;
+
+  btn.addEventListener('click', async () => {
+    const idea = input.value.trim();
+    if (!idea) {
+      input.focus();
+      return;
+    }
+
+    response.textContent = '';
+    response.style.display = 'block';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+
+    try {
+      const API_KEY = 'AIzaSyB_JM4VqAN5G9CL_ey_VBxKCjWCBPn6uJE';
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `You are a creative director at a premium animation studio called INTERNITY STUDIO. Generate a compelling elevator pitch for this project idea: ${idea}. Keep it under 100 words, professional, and inspiring. Focus on the visual storytelling and animation possibilities.`
+              }]
+            }]
+          })
+        }
+      );
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate response. Please try again.';
+      typewriterEffect(response, text);
+    } catch (err) {
+      response.textContent = 'Error generating vision. Please check your connection and try again.';
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  });
+}
+
+function typewriterEffect(element, text, speed = 25) {
+  let i = 0;
+  element.textContent = '';
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
+
+// ============================================================
+// 13.  ADDITIONAL UTILITIES
 // ============================================================
 
 // Debounced resize handler for ScrollTrigger recalculation
@@ -970,12 +1007,13 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    ScrollTrigger.refresh();
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
   }, 250);
 });
 
 // Handle visibility changes -- pause expensive animations when tab hidden
 document.addEventListener('visibilitychange', () => {
+  if (!lenis) return;
   if (document.hidden) {
     lenis.stop();
   } else {
@@ -991,11 +1029,15 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = document.querySelector(targetId);
     if (target) {
       e.preventDefault();
-      lenis.scrollTo(target, {
-        offset: 0,
-        duration: 1.5,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
+      if (lenis) {
+        lenis.scrollTo(target, {
+          offset: 0,
+          duration: 1.5,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   });
 });
@@ -1006,14 +1048,18 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    gsap.registerPlugin(ScrollTrigger);
-    initScrollRevealAnimations();
-    initSVGParallax();
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      initScrollRevealAnimations();
+      initSVGParallax();
+      initMagneticButtons();
+      initHeroMouseParallax();
+    }
     initCustomCursor();
-    initMagneticButtons();
-    initHeroMouseParallax();
-    initBirdFlock();
+    initAIVisionPitch();
   } catch (err) {
     console.error('[main.js] Initialisation error:', err);
   }
+  // Bird flock has its own error handling via dynamic import try-catch
+  initBirdFlock();
 });
